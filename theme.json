@@ -1,17 +1,20 @@
-{
-    "id": "81fcd6b3-f014-4796-988f-6c3cb3874db8",
-    "name": "Zen Context Menu",
-    "description": "Declutter your right click menu, hide options you don't need",
-    "homepage": "https://github.com/KiKaraage/ZenMods/",
-    "style": "https://raw.githubusercontent.com/zen-browser/theme-store/main/themes/81fcd6b3-f014-4796-988f-6c3cb3874db8/chrome.css",
-    "readme": "https://raw.githubusercontent.com/zen-browser/theme-store/main/themes/81fcd6b3-f014-4796-988f-6c3cb3874db8/readme.md",
-    "image": "https://raw.githubusercontent.com/zen-browser/theme-store/main/themes/81fcd6b3-f014-4796-988f-6c3cb3874db8/image.png",
-    "author": "KiKaraage",
-    "version": "3.2_fix",
-    "preferences": "https://raw.githubusercontent.com/zen-browser/theme-store/main/themes/81fcd6b3-f014-4796-988f-6c3cb3874db8/preferences.json",
-    "tags": [
-        "context menu"
-    ],
-    "createdAt": "2024-10-06",
-    "updatedAt": "2025-02-08"
+﻿{
+    "id":  "zen-context-menu-fix",
+    "name":  "Zen Context Menu Fix",
+    "author":  "Sostay",
+    "description":  "Declutter your right click menu, hide options you don\u0027t need (Maintained \u0026 Fixed)",
+    "homepage":  "https://github.com/Sostay/Zen-Context-Menu-Fix",
+    "version":  "3.2.1",
+    "createdAt":  "2024-10-06",
+    "updatedAt":  "2026-10-30",
+    "image":  "https://raw.githubusercontent.com/Sostay/Zen-Context-Menu-Fix/main/image.png",
+    "readme":  "https://raw.githubusercontent.com/Sostay/Zen-Context-Menu-Fix/main/README.md",
+    "style":  {
+                  "chrome":  "chrome.css"
+              },
+    "preferences":  "preferences.json",
+    "tags":  [
+                 "context menu",
+                 "fix"
+             ]
 }
