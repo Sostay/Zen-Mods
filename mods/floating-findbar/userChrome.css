@@ -1,10 +1,8 @@
 ﻿/* ==========================================================================
  * Floating Findbar Fix for Zen Browser (Smart Responsive Floating Island)
  * 核心设计：
- * 1. 默认极简模式：纯粹单行大胶囊 (Pill Shape)
- * 2. 高级选项模式：
- *    - 第一行：搜索框 + 导航按钮 + 搜索结果计数 (紧随其后) + 右上角关闭按钮
- *    - 第二行：4 个高级选项复选框整齐横向排列 (强制换行，绝不留在第一行)
+ * 1. 默认极简模式：纯粹单行不换行大胶囊，搜索结果紧随右侧，随文字自适应延伸
+ * 2. 高级选项模式：搜索框与搜索结果同在第一行，高级复选框统一优雅排在第二行
  * 3. 关闭按钮右上角绝对锁定，彻底免疫文字遮挡
  * 4. 支持水平/垂直位置偏好配置，防塌陷机制锁死
  * ========================================================================== */
@@ -48,7 +46,7 @@
 }
 
 /* ==========================================================================
- * Findbar 主容器：基础形态
+ * Findbar 主容器：基础单行胶囊形态
  * ========================================================================== */
 findbar {
     position: fixed !important;
@@ -61,17 +59,16 @@ findbar {
     /* 最高图层置顶 */
     z-index: 99999 !important;
     
-    /* 基础布局 */
+    /* 默认单行紧凑自适应布局 */
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    width: auto !important;
-    min-width: 480px !important;
-    max-width: 90vw !important;
-    height: auto !important;
-    min-height: 48px !important;
+    width: max-content !important;
+    min-width: 380px !important;
+    max-width: 92vw !important;
+    height: 48px !important;
     box-sizing: border-box !important;
-    padding: 6px 44px 6px 8px !important; /* 右侧预留 44px 专属通道给关闭按钮 */
+    padding: 6px 44px 6px 8px !important; /* 右侧预留 44px 给关闭按钮 */
     border-radius: 9999px !important; /* 默认全圆角大胶囊 */
     
     /* 现代毛玻璃背景与微光边框 */
@@ -81,13 +78,14 @@ findbar {
     border: 1px solid var(--zen-colors-border, rgba(255, 255, 255, 0.16)) !important;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2) !important;
     
-    /* 阻尼过渡 */
+    /* 显隐过渡 */
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
     transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
                 opacity 0.25s ease, 
                 visibility 0.25s ease,
+                width 0.2s ease,
                 border-radius 0.25s ease !important;
 }
 
@@ -109,26 +107,25 @@ findbar[hidden] {
 }
 
 /* ==========================================================================
- * 内部两行流式布局 (Flexbox)
+ * 内部控件排版：默认绝对单行，绝不折行 (flex-wrap: nowrap)
  * ========================================================================== */
 .findbar-container {
     display: flex !important;
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important; /* 默认严禁换行！强制保持单行 */
     align-items: center !important;
-    height: auto !important;
-    width: 100% !important;
+    height: 100% !important;
+    width: auto !important;
     flex: 1 1 auto !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow: visible !important;
 }
 
-/* 默认隐藏换行伪元素 */
 .findbar-container::before {
-    display: none;
+    display: none !important;
 }
 
-/* 第一行：搜索框与导航箭头 (order: 0) */
+/* 搜索框与导航箭头组件 */
 [anonid="findbar-textbox-wrapper"] {
     display: flex !important;
     align-items: center !important;
@@ -138,8 +135,8 @@ findbar[hidden] {
 
 /* 搜索输入框：胶囊内嵌槽 */
 .findbar-textbox {
-    width: 240px !important;
-    min-width: 200px !important;
+    width: 220px !important;
+    min-width: 180px !important;
     height: 34px !important;
     border-radius: 9999px !important;
     padding: 0 16px !important;
@@ -164,7 +161,7 @@ findbar[hidden] {
     box-shadow: 0 0 0 1.5px rgba(235, 60, 60, 0.6) !important;
 }
 
-/* 导航按钮：上一个 / 下一个 (处于第一行内部) */
+/* 导航按钮：上一个 / 下一个 */
 .findbar-find-previous,
 .findbar-find-next {
     position: relative !important;
@@ -202,7 +199,7 @@ findbar[hidden] {
     transform: translate(-50%, -50%) !important;
 }
 
-/* 匹配计数信息 (如 "第 2 项，共找到 88 个匹配项")：紧随搜索框右侧，同在第一行 (order: 0) */
+/* 匹配计数信息 (如 "第 1 项，共找到 1 个匹配项")：紧随导航按钮右侧，强制同在单行 */
 .found-matches {
     order: 0 !important;
     margin: 0 12px 0 8px !important;
@@ -219,7 +216,7 @@ findbar[hidden] {
 }
 
 /* ==========================================================================
- * 关闭按钮：绝对固定在右上角，永远不被文字与第二行挤占
+ * 关闭按钮：绝对固定在右上角，永远不被文字挤占
  * ========================================================================== */
 .findbar-closebutton {
     position: absolute !important;
@@ -241,7 +238,7 @@ findbar[hidden] {
  * 原生高级搜索复选框 (高亮全部、区分大小写、全词匹配等)
  * ========================================================================== */
 
-/* 默认隐藏高级复选框 */
+/* 默认隐藏高级复选框，保持纯粹极简单行胶囊 */
 .findbar-highlight,
 .findbar-case-sensitive,
 .findbar-match-diacritics,
@@ -251,26 +248,28 @@ findbar[hidden] {
 }
 
 /* --------------------------------------------------------------------------
- * 当开启“显示高级选项”时：
- * 1. 插入强制换行断点 (::before flex-basis: 100%)
- * 2. 4 个复选框统一移至第二行 (order: 2)
- * 3. 搜索结果稳稳留在第一行右侧 (order: 0)
+ * 仅当开启“显示高级选项”时：才进入双行模式
  * -------------------------------------------------------------------------- */
 @media (-moz-pref("floating_findbar.show_checkboxes", true)) {
-    /* 容器自适应卡片微调 */
     findbar {
         min-width: 580px !important;
+        height: auto !important;
         border-radius: 18px !important; /* 双行时为精致圆角卡片 */
         padding: 8px 44px 10px 10px !important;
     }
 
-    /* 核心断点：第一行与第二行之间的纯净分界线 */
+    .findbar-container {
+        flex-wrap: wrap !important; /* 开启高级选项时允许折行 */
+        row-gap: 8px !important;
+    }
+
+    /* 核心断点：第一行(搜索框+计数)与第二行(复选框)之间的分界线 */
     .findbar-container::before {
         content: "" !important;
         display: block !important;
         order: 1 !important;
         width: 100% !important;
-        height: 6px !important;
+        height: 4px !important;
         flex-basis: 100% !important;
     }
 
