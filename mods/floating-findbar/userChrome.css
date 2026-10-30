@@ -1,6 +1,6 @@
 ﻿/* ==========================================================================
  * Floating Findbar Fix for Zen Browser (Pill Shape & Position Configurable)
- * 特性：高圆角胶囊形态、位置自由配置、高级功能项按需开启、层级与视口修复
+ * 修复：防止容器坍缩、大胶囊全圆角、位置自选、按需展示高级选项
  * ========================================================================== */
 
 /* --- 基础变量与默认位置 (顶部居中) --- */
@@ -55,18 +55,19 @@ findbar {
     /* 最高图层置顶 */
     z-index: 99999 !important;
     
-    /* 胶囊形态与布局 */
+    /* 关键尺寸：设定安全宽度与最小宽度，防止内容坍缩为小块 */
     display: flex !important;
     align-items: center !important;
-    width: max-content !important;
-    min-width: 0 !important;
-    max-width: 92vw !important;
+    width: auto !important;
+    min-width: 520px !important;
+    max-width: 90vw !important;
     height: 48px !important;
-    padding: 0 10px 0 6px !important;
-    border-radius: 9999px !important; /* 真正的全圆角胶囊形态 */
+    box-sizing: border-box !important;
+    padding: 6px 12px 6px 8px !important;
+    border-radius: 9999px !important; /* 真正的全圆角大胶囊形态 */
     
     /* 细腻毛玻璃质感背景 */
-    background: var(--arrowpanel-background, var(--toolbar-bgcolor, rgba(28, 27, 34, 0.9))) !important;
+    background: var(--arrowpanel-background, var(--toolbar-bgcolor, rgba(28, 27, 34, 0.92))) !important;
     backdrop-filter: blur(24px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
     border: 1px solid var(--zen-colors-border, rgba(255, 255, 255, 0.16)) !important;
@@ -87,7 +88,7 @@ findbar > .findbar-closebutton {
     opacity: 1 !important;
 }
 
-/* 隐藏收起状态：向外滑出并淡出 */
+/* 隐藏收起状态：优雅滑出并淡出 */
 findbar[hidden] {
     transform: translateX(var(--floating-findbar-translate-x)) translateY(var(--floating-findbar-hide-translate-y)) scale(0.96) !important;
     opacity: 0 !important;
@@ -105,37 +106,39 @@ findbar[hidden] {
     display: flex !important;
     align-items: center !important;
     height: 100% !important;
+    width: 100% !important;
+    flex-grow: 1 !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow: visible !important;
 }
 
-/* 搜索输入框：圆润胶囊内嵌 */
+/* 搜索输入框：圆润胶囊内嵌，flex-grow 撑开主体 */
 .findbar-textbox {
-    width: 260px !important;
-    min-width: 180px !important;
+    flex-grow: 1 !important;
+    min-width: 220px !important;
     height: 34px !important;
-    border-radius: 9999px !important; /* 内部输入框同样采用全圆角胶囊 */
-    padding: 0 14px !important;
+    border-radius: 9999px !important; /* 内部输入框全圆角胶囊 */
+    padding: 0 16px !important;
     box-shadow: none !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border: none !important;
     outline: none !important;
-    background: var(--toolbar-field-focus-background-color, rgba(0, 0, 0, 0.22)) !important;
+    background: var(--toolbar-field-focus-background-color, rgba(0, 0, 0, 0.25)) !important;
     color: inherit !important;
     font-size: 13.5px !important;
-    margin-right: 4px !important;
-    transition: border-color 0.2s ease, background 0.2s ease !important;
+    margin-right: 6px !important;
+    transition: background 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .findbar-textbox:focus {
-    border-color: var(--color-accent-primary, #9a72ff) !important;
-    background: var(--toolbar-field-focus-background-color, rgba(0, 0, 0, 0.35)) !important;
+    background: var(--toolbar-field-focus-background-color, rgba(0, 0, 0, 0.38)) !important;
+    box-shadow: 0 0 0 1.5px var(--color-accent-primary, #9a72ff) !important;
 }
 
 /* 未匹配到搜索词时微红警示 */
 .findbar-textbox[status="notfound"] {
     background-color: rgba(235, 60, 60, 0.25) !important;
-    border-color: rgba(235, 60, 60, 0.6) !important;
+    box-shadow: 0 0 0 1.5px rgba(235, 60, 60, 0.6) !important;
 }
 
 /* 按钮图标通用圆形样式 */
@@ -146,11 +149,13 @@ findbar[hidden] {
     padding: 0 !important;
     width: 32px !important;
     height: 32px !important;
+    min-width: 32px !important;
     border-radius: 9999px !important; /* 图标按钮全圆角 */
     margin: 0 2px !important;
     background: transparent !important;
     border: none !important;
     cursor: pointer !important;
+    flex-shrink: 0 !important;
     transition: background-color 0.15s ease !important;
 }
 
@@ -178,9 +183,10 @@ findbar[hidden] {
 /* 匹配计数信息 (如 "1 of 10 matches") */
 .found-matches {
     margin: 0 10px 0 6px !important;
-    font-size: 12.5px !important;
-    opacity: 0.75 !important;
+    font-size: 13px !important;
+    opacity: 0.8 !important;
     white-space: nowrap !important;
+    flex-shrink: 0 !important;
 }
 
 @media (-moz-pref("floating_findbar.show_match_count", false)) {
@@ -214,6 +220,7 @@ findbar[hidden] {
         font-size: 12px !important;
         opacity: 0.85 !important;
         cursor: pointer !important;
+        flex-shrink: 0 !important;
     }
 
     .findbar-highlight:hover,

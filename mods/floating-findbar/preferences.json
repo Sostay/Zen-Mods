@@ -15,7 +15,6 @@
         "label":  "水平停靠位置",
         "type":  "dropdown",
         "defaultValue":  "center",
-        "placeholder":  "居中 (默认)",
         "options":  [
                         {
                             "label":  "居中 (Center)",
@@ -36,7 +35,6 @@
         "label":  "垂直停靠位置",
         "type":  "dropdown",
         "defaultValue":  "top",
-        "placeholder":  "顶部 (默认)",
         "options":  [
                         {
                             "label":  "顶部 (Top)",
