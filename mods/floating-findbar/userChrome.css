@@ -1,83 +1,144 @@
-﻿/* =========================================================
- * Floating Findbar Fix for Zen Browser
- * 修复：层级遮挡、固定视口居中、显隐动效死锁与毛玻璃适配
- * ========================================================= */
+﻿/* ==========================================================================
+ * Floating Findbar Fix for Zen Browser (Pill Shape & Position Configurable)
+ * 特性：高圆角胶囊形态、位置自由配置、高级功能项按需开启、层级与视口修复
+ * ========================================================================== */
 
+/* --- 基础变量与默认位置 (顶部居中) --- */
+:root {
+    --floating-findbar-top: 24px;
+    --floating-findbar-bottom: auto;
+    --floating-findbar-left: 50%;
+    --floating-findbar-right: auto;
+    --floating-findbar-translate-x: -50%;
+    --floating-findbar-translate-y: 0px;
+    --floating-findbar-hide-translate-y: -24px;
+}
+
+/* --- 位置自定义：水平居左 --- */
+@media (-moz-pref("floating_findbar.horizontal_position", "left")) {
+    :root {
+        --floating-findbar-left: 24px;
+        --floating-findbar-right: auto;
+        --floating-findbar-translate-x: 0%;
+    }
+}
+
+/* --- 位置自定义：水平居右 --- */
+@media (-moz-pref("floating_findbar.horizontal_position", "right")) {
+    :root {
+        --floating-findbar-left: auto;
+        --floating-findbar-right: 24px;
+        --floating-findbar-translate-x: 0%;
+    }
+}
+
+/* --- 位置自定义：垂直底部 --- */
+@media (-moz-pref("floating_findbar.vertical_position", "bottom")) {
+    :root {
+        --floating-findbar-top: auto;
+        --floating-findbar-bottom: 24px;
+        --floating-findbar-hide-translate-y: 24px;
+    }
+}
+
+/* ==========================================================================
+ * Findbar 主容器：胶囊大圆角 (Pill Shape)
+ * ========================================================================== */
 findbar {
-    /* 1. 脱离父容器裁剪，视口顶部居中固定 */
     position: fixed !important;
-    top: 24px !important;
-    left: 50% !important;
-    transform: translateX(-50%) translateY(0) !important;
+    top: var(--floating-findbar-top) !important;
+    bottom: var(--floating-findbar-bottom) !important;
+    left: var(--floating-findbar-left) !important;
+    right: var(--floating-findbar-right) !important;
+    transform: translateX(var(--floating-findbar-translate-x)) translateY(var(--floating-findbar-translate-y)) !important;
     
-    /* 2. 最高层级置顶，防止被网页内容与分屏图层覆盖 */
+    /* 最高图层置顶 */
     z-index: 99999 !important;
     
-    /* 3. 布局与尺寸 */
+    /* 胶囊形态与布局 */
     display: flex !important;
     align-items: center !important;
     width: max-content !important;
-    min-width: 520px !important;
-    max-width: 90vw !important;
-    padding: 6px 10px !important;
-    border-radius: 12px !important;
+    min-width: 0 !important;
+    max-width: 92vw !important;
+    height: 48px !important;
+    padding: 0 10px 0 6px !important;
+    border-radius: 9999px !important; /* 真正的全圆角胶囊形态 */
     
-    /* 4. 现代毛玻璃背景与细腻边框 */
-    background: var(--arrowpanel-background, var(--toolbar-bgcolor, #1e1e24)) !important;
-    backdrop-filter: blur(20px) !important;
-    border: 1px solid var(--zen-colors-border, rgba(255, 255, 255, 0.15)) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+    /* 细腻毛玻璃质感背景 */
+    background: var(--arrowpanel-background, var(--toolbar-bgcolor, rgba(28, 27, 34, 0.9))) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid var(--zen-colors-border, rgba(255, 255, 255, 0.16)) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2) !important;
     
-    /* 5. 显隐与过渡控制 */
+    /* 显隐与丝滑阻尼过渡动效 */
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
                 opacity 0.25s ease, 
                 visibility 0.25s ease !important;
 }
 
-/* 确保内部容器与按钮完全不透明显示 */
+/* 确保内部容器与组件完全不透明 */
 findbar > .findbar-container,
 findbar > .findbar-closebutton {
     opacity: 1 !important;
 }
 
-/* 关闭/隐藏状态：优雅向上收缩滑出 */
+/* 隐藏收起状态：向外滑出并淡出 */
 findbar[hidden] {
-    transform: translateX(-50%) translateY(-20px) !important;
+    transform: translateX(var(--floating-findbar-translate-x)) translateY(var(--floating-findbar-hide-translate-y)) scale(0.96) !important;
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
-    transition: transform 0.2s ease, 
-                opacity 0.2s ease, 
-                visibility 0s 0.2s !important;
+    transition: transform 0.22s ease, 
+                opacity 0.22s ease, 
+                visibility 0s 0.22s !important;
 }
 
-/* 搜索输入框美化 */
+/* ==========================================================================
+ * 内部元素与控件排版
+ * ========================================================================== */
 .findbar-container {
-    height: max-content !important;
-    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    overflow: visible !important;
 }
 
+/* 搜索输入框：圆润胶囊内嵌 */
 .findbar-textbox {
-    border-radius: 8px !important;
-    padding: 6px 12px !important;
+    width: 260px !important;
+    min-width: 180px !important;
+    height: 34px !important;
+    border-radius: 9999px !important; /* 内部输入框同样采用全圆角胶囊 */
+    padding: 0 14px !important;
     box-shadow: none !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     outline: none !important;
-    background: var(--toolbar-field-focus-background-color, rgba(0, 0, 0, 0.2)) !important;
+    background: var(--toolbar-field-focus-background-color, rgba(0, 0, 0, 0.22)) !important;
     color: inherit !important;
-    flex-grow: 1 !important;
+    font-size: 13.5px !important;
+    margin-right: 4px !important;
+    transition: border-color 0.2s ease, background 0.2s ease !important;
 }
 
 .findbar-textbox:focus {
-    border-color: var(--color-accent-primary, #8888ff) !important;
+    border-color: var(--color-accent-primary, #9a72ff) !important;
+    background: var(--toolbar-field-focus-background-color, rgba(0, 0, 0, 0.35)) !important;
 }
 
-/* 上一个 / 下一个 / 关闭 按钮 */
+/* 未匹配到搜索词时微红警示 */
+.findbar-textbox[status="notfound"] {
+    background-color: rgba(235, 60, 60, 0.25) !important;
+    border-color: rgba(235, 60, 60, 0.6) !important;
+}
+
+/* 按钮图标通用圆形样式 */
 .findbar-find-previous,
 .findbar-find-next,
 .findbar-closebutton {
@@ -85,8 +146,24 @@ findbar[hidden] {
     padding: 0 !important;
     width: 32px !important;
     height: 32px !important;
-    border-radius: 8px !important;
+    border-radius: 9999px !important; /* 图标按钮全圆角 */
     margin: 0 2px !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease !important;
+}
+
+.findbar-find-previous:hover,
+.findbar-find-next:hover,
+.findbar-closebutton:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.findbar-find-previous:active,
+.findbar-find-next:active,
+.findbar-closebutton:active {
+    background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .findbar-find-previous .toolbarbutton-icon,
@@ -98,19 +175,51 @@ findbar[hidden] {
     transform: translate(-50%, -50%) !important;
 }
 
-.findbar-find-previous {
-    margin-left: 6px !important;
-}
-
+/* 匹配计数信息 (如 "1 of 10 matches") */
 .found-matches {
-    margin: 0 8px !important;
+    margin: 0 10px 0 6px !important;
+    font-size: 12.5px !important;
+    opacity: 0.75 !important;
+    white-space: nowrap !important;
 }
 
-/* 隐藏不常用的冗余复选框与状态项，保持极简 */
+@media (-moz-pref("floating_findbar.show_match_count", false)) {
+    .found-matches {
+        display: none !important;
+    }
+}
+
+/* ==========================================================================
+ * 原生高级搜索复选框 (高亮全部、区分大小写、全词匹配等)
+ * ========================================================================== */
+
+/* 默认隐藏高级复选框，维持如效果图一般的纯粹胶囊单行 */
 .findbar-highlight,
 .findbar-case-sensitive,
 .findbar-match-diacritics,
 .findbar-entire-word,
 .findbar-find-status {
     display: none !important;
+}
+
+/* 当用户在 Sine 设置中勾选“显示高级选项”时优雅呈现 */
+@media (-moz-pref("floating_findbar.show_checkboxes", true)) {
+    .findbar-highlight,
+    .findbar-case-sensitive,
+    .findbar-match-diacritics,
+    .findbar-entire-word {
+        display: inline-flex !important;
+        align-items: center !important;
+        margin: 0 4px !important;
+        font-size: 12px !important;
+        opacity: 0.85 !important;
+        cursor: pointer !important;
+    }
+
+    .findbar-highlight:hover,
+    .findbar-case-sensitive:hover,
+    .findbar-match-diacritics:hover,
+    .findbar-entire-word:hover {
+        opacity: 1 !important;
+    }
 }

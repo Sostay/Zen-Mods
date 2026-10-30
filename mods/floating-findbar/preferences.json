@@ -1,0 +1,68 @@
+﻿[
+    {
+        "type":  "text",
+        "label":  "⚙️ Floating Findbar 设置",
+        "size":  "1.2em",
+        "margin":  "8px 4px"
+    },
+    {
+        "type":  "separator",
+        "label":  "📍 位置与布局",
+        "margin":  "12px 0"
+    },
+    {
+        "property":  "floating_findbar.horizontal_position",
+        "label":  "水平停靠位置",
+        "type":  "dropdown",
+        "defaultValue":  "center",
+        "placeholder":  "居中 (默认)",
+        "options":  [
+                        {
+                            "label":  "居中 (Center)",
+                            "value":  "center"
+                        },
+                        {
+                            "label":  "靠左 (Left)",
+                            "value":  "left"
+                        },
+                        {
+                            "label":  "靠右 (Right)",
+                            "value":  "right"
+                        }
+                    ]
+    },
+    {
+        "property":  "floating_findbar.vertical_position",
+        "label":  "垂直停靠位置",
+        "type":  "dropdown",
+        "defaultValue":  "top",
+        "placeholder":  "顶部 (默认)",
+        "options":  [
+                        {
+                            "label":  "顶部 (Top)",
+                            "value":  "top"
+                        },
+                        {
+                            "label":  "底部 (Bottom)",
+                            "value":  "bottom"
+                        }
+                    ]
+    },
+    {
+        "type":  "separator",
+        "label":  "🎨 功能与复选框选项",
+        "margin":  "12px 0"
+    },
+    {
+        "property":  "floating_findbar.show_checkboxes",
+        "label":  "显示高级选项 (高亮全部、区分大小写、全词匹配等)",
+        "type":  "checkbox",
+        "defaultValue":  false
+    },
+    {
+        "property":  "floating_findbar.show_match_count",
+        "label":  "显示匹配数量统计 (如 1 of 10 matches)",
+        "type":  "checkbox",
+        "defaultValue":  true
+    }
+]
