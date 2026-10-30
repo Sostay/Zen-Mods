@@ -1,0 +1,24 @@
+﻿{
+    "id":  "floating-findbar-fix",
+    "name":  "Floating Findbar Fix",
+    "author":  "Sostay",
+    "description":  "A floating findbar with opening and closing animation for Zen (Maintained \u0026 Fixed)",
+    "homepage":  "https://github.com/Sostay/Zen-Mods/tree/main/mods/floating-findbar",
+    "version":  "1.0.1",
+    "createdAt":  "2024-08-30",
+    "updatedAt":  "2026-10-30",
+    "image":  "https://raw.githubusercontent.com/Sostay/Zen-Mods/main/mods/floating-findbar/cover.png",
+    "readme":  "https://raw.githubusercontent.com/Sostay/Zen-Mods/main/mods/floating-findbar/README.md",
+    "style":  {
+                  "chrome":  "userChrome.css"
+              },
+    "tags":  [
+                 "Float",
+                 "Floating",
+                 "Findbar",
+                 "fix"
+             ],
+    "fork":  [
+                 "zen"
+             ]
+}

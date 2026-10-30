@@ -1,69 +1,83 @@
-﻿# Zen Context Menu Fix
+﻿# Zen-Mods 🧘‍♂️
 
-> 自行维护与修复版本的 **Zen Context Menu**（基于原作者 [KiKaraage](https://github.com/KiKaraage/ZenMods) 的 Zen 浏览器右键菜单精简 Mod，原 Mod ID: `81fcd6b3-f014-4796-988f-6c3cb3874db8`）。
+> 专注于 **Zen 浏览器** 优秀模组（Zen Mods / Sine Mods）的集中维护、长期修复与定制适配集合仓库。
 
-![Zen Context Menu](image.png)
-
-## 📌 项目背景
-
-Zen 浏览器随着上游 Firefox 升级以及自身功能迭代（例如新增 Glance 快速预览、分屏标签等），原有主题商店中的 Zen Context Menu 已停止维护，部分右键菜单项的选择器失效或样式冲突。
-
-本仓库保留了该 Mod 的完整代码结构，用于个人长期更新、修复失效选择器并适配 Zen 新版本。
+随着 Zen 浏览器及上游 Firefox 快速迭代，许多优秀的社区 Mod（如右键菜单精简、悬浮搜索栏等）原作者因各种原因不再更新维护，出现样式错位、选择器失效或与新特性冲突的情况。本仓库用于集中收集、修复并持续维护这些实用模组。
 
 ---
 
-## 📂 文件结构说明
+## 📦 模组列表与安装指令
 
-| 文件 | 说明 |
-| :--- | :--- |
-| **`chrome.css`** | 核心样式表。包含标签页右键菜单的人体工程学重排、各类冗余菜单项的隐藏规则、图标隐藏与间距修复等。 |
-| **`preferences.json`** | Mod 的配置项定义文件。定义在 Zen / Sine 设置面板中可勾选的开关项。 |
-| **`theme.json`** | Mod 元数据定义（ID、名称、版本、作者等）。 |
-| **`image.png`** | 预览封面图片。 |
+在 Zen 浏览器的 **设置 -> Sine Mods** 页面，找到 **“or, add your own locally from a GitHub repo”** 输入框，复制对应的命令并点击 **Install** 即可：
 
----
-
-## 🛠️ 安装与使用方法
-
-### 方式一：在 Sine / 本地 Zen Mods 中加载（推荐）
-如果你在使用 **Sine** 扩展或 Zen 浏览器本地 Mod 机制：
-
-1. 在 Zen 配置目录下的 `chrome/sine-mods/`（或 `chrome/zen-themes/`）中，确保存在本 Mod 文件夹（或创建符号链接 Symlink 指向本目录）。
-2. 在 `mods.json`（或 `zen-themes.json`）中将该 Mod 的 `"no-updates"` 设为 `true`，防止商店自动覆盖本地修改。
-3. 进入浏览器设置或 Sine 面板重新切换启用一次即可。
-
-### 方式二：直接作为 `userChrome.css` 使用
-如果你更喜欢直接掌控样式：
-1. 打开 Zen 配置文件夹（可在地址栏访问 `about:support` -> 查看“配置文件夹”）。
-2. 打开 `chrome/userChrome.css`（若无则新建）。
-3. 使用 `@import` 引入本仓库的 `chrome.css`，或者直接将所需样式复制进 `userChrome.css`。
-4. 确保 `about:config` 中的 `toolkit.legacyUserProfileCustomizations.stylesheets` 为 `true`。
-5. 重启浏览器。
+| 模组名称 | 简介 | Sine 安装指令 (直接复制填入输入框) |
+| :--- | :--- | :--- |
+| **Zen Context Menu Fix** | 精简右键菜单冗余选项，人体工程学重排标签右键菜单，提供 35 项图形化开关配置 | `Sostay/Zen-Mods/tree/main/mods/zen-context-menu` |
+| **Floating Findbar Fix** | 居中悬浮搜索栏，带有优雅的展开/收起平滑过渡动画 | `Sostay/Zen-Mods/tree/main/mods/floating-findbar` |
 
 ---
 
-## 🔍 排查与修复指南（当 Zen 更新导致菜单项失效时）
+## 🚀 安装与使用方法
 
-Firefox 与 Zen 经常调整右键菜单的 DOM 结构与 ID。遇到菜单项无法隐藏或错位时，可通过以下步骤抓取最新元素 ID：
+### 方式 1：通过 Sine Mods 界面安装（推荐）
 
-### 1. 开启开发者工具权限
-1. 按 `F12` 打开开发者工具，点击右上角设置图标（⚙️）。
-2. 在设置中勾选：
-   - **“启用浏览器 chrome 和附加组件调试工具箱” (Enable browser chrome and add-on debugging toolboxes)**
-   - **“启用远程调试” (Enable remote debugging)**
+1. 打开 Zen 浏览器设置，进入 **Sine Mods** 页面。
+2. 在 **Marketplace** 下方的文本框中填入你想安装的 Mod 子路径（见上方表格）。
+3. 点击 **Install** 按钮。Sine 会自动识别多 Mod 聚合仓库，并将对应的子 Mod 独立解压、加载生效。
+4. 安装完成后，在“Installed Mods”列表中即可看到对应的 Mod 卡片；点击齿轮 ⚙️ 图标可打开功能开关面板（如适用）。
 
-### 2. 锁定右键菜单并检查元素
-1. 按全局快捷键 `Ctrl + Shift + Alt + I`（macOS 上为 `Cmd + Opt + Shift + I`）打开 **Browser Toolbox**。
-2. 在弹出的权限请求中点击“允许”。
-3. 在 Browser Toolbox 窗口右上角，点击四个小方块重叠的气泡图标，勾选 **“禁用弹出菜单自动隐藏” (Disable popup auto-hide)**。
-4. 回到 Zen 浏览器主窗口右击呼出菜单（此时菜单不会消失）。
-5. 使用工具箱左上角的光标指针点击该菜单项，即可查到其最新 `id` 或属性选择器。
-6. 在 `chrome.css` 对应的 `@media -moz-pref(...)` 区块中更新选择器即可。
+> 💡 **提示**：如果点击 Install 提示网络超时或无法连接，请确保系统已开启网络代理/TUN 模式（以便浏览器访问 GitHub 资源下载服务）。
+
+### 方式 2：本地文件直接加载
+
+如果你想在本地开发调试，或者直接离线使用：
+1. 将本仓库克隆到本地：
+   ```bash
+   git clone https://github.com/Sostay/Zen-Mods.git
+   ```
+2. 打开 Zen 配置目录下的 `chrome/sine-mods/`（可在 `about:support` -> “配置文件夹” 找到）。
+3. 将 `mods/zen-context-menu` 或 `mods/floating-findbar` 文件夹复制（或通过软链接 `mklink /D`）放入 `chrome/sine-mods/` 下。
+4. 在 Sine 列表中重新切换启用即可。
 
 ---
 
-## 📝 维护日志
+## 📂 仓库结构
 
-- **v3.2_fix / Initial Repository Setup**:
-  - 建立独立维护仓库 `Zen Context Menu Fix`。
-  - 整理 `chrome.css`、`preferences.json`、`theme.json` 及封面资源。
+```text
+Zen-Mods/
+├── mods/
+│   ├── zen-context-menu/          # 右键菜单精简与人体工程学重排 Mod
+│   │   ├── theme.json             # Mod 元数据
+│   │   ├── chrome.css             # 核心 CSS 样式表
+│   │   ├── preferences.json       # 图形化开关选项定义
+│   │   ├── image.png              # 封面预览
+│   │   └── README.md              # 详细说明与抓取排查教程
+│   │
+│   └── floating-findbar/          # 悬浮动画搜索栏 Mod
+│       ├── theme.json             # Mod 元数据
+│       ├── userChrome.css         # 搜索栏样式与动效
+│       ├── cover.png              # 封面预览
+│       └── README.md              # 详细说明
+│
+├── .gitignore
+├── LICENSE
+└── README.md                      # 仓库主页指南
+```
+
+---
+
+## 🔍 问题排查与维护指南
+
+若 Zen 浏览器更新导致某些元素选择器失效：
+1. 按 `F12` 开启开发者工具并启用“chrome 和附加组件调试”与“远程调试”。
+2. 按 `Ctrl + Shift + Alt + I` 打开 **Browser Toolbox**。
+3. 点击工具箱右上角的“禁用弹出菜单自动隐藏”（四个小方块气泡图标）。
+4. 使用元素选择器拾取界面元素并获取最新类名/ID，在对应 Mod 的样式文件中修改并提交。
+
+---
+
+## 📜 鸣谢与开源协议
+
+- [KiKaraage/ZenMods](https://github.com/KiKaraage/ZenMods) - 原 Zen Context Menu 作者
+- [qumeqa/floating-findbar](https://github.com/qumeqa/floating-findbar) - 原 Floating Findbar 作者
+- 本项目遵循 [MIT 许可证](LICENSE)。
